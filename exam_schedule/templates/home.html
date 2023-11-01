@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2a2a2a; /* Classy dark grey background */
+            color: #fff; /* Text color in dark mode */
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #008080; /* Teal color */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005555; /* Darker teal color */
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .messages li {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .messages.error {
+            background-color: #ff6b6b;
+            color: #fff;
+        }
+
+        .messages.success {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 34px; /* Adjust the font size as needed */
+            color: #fff; /* Text color in dark mode */
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background-color: #353535; /* Dark mode table background color */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            margin: 20px auto; /* Move table up */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #777; /* Dark mode table border color */
+            color: #fff;
+        }
+
+        th {
+            background-color: #027171; /* Teal color */
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #181717; /* Dark mode even row background color */
+        }
+
+        tr:hover {
+            background-color: #363636; /* Dark mode row hover background color */
+        }
+
+        button[type="submit"] {
+            background-color: #00b3ff;
+            color: #fff;
+            padding: 8px 13px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        table button[type="submit"] {
+            background-color: #ff6666; /* Red color for the remove button */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        table button[type="submit"]:hover {
+            background-color: #ff0000;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #00b3ff;
+        }
+
+        .warning {
+            display: flex;
+            align-items: center;
+            margin-left: 120px; /* Adjust the distance between the button and messages */
+            margin-top: -20px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            margin-right: 5px; /* Adjust the space between the icon and the message */
+            color: red; /* Red color for the alert icon */
+            margin-top: -10px;
+        }
+
+        .message {
+            color: red; /* Red color for the warning message */
+            font-weight: bold; /* Add bold font weight for the message */
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Search Form -->
+    <form method="post" action="/">
+        {% csrf_token %}
+        <label for="course">Course Code:</label>
+        <input type="text" id="course" name="course" required>
+        <label for="section">Section:</label>
+        <input type="text" id="section" name="section" required>
+        <button type="submit">Search</button>
+        <div class="warning">
+            {% if messages %}
+                {% for message in messages %}
+                    <span class="alert-icon">⚠️</span>
+                    <span class="message">{{ message }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </form>
+
+    
+    <!-- Display Exam Routine -->
+    <h2>Exam Routine:</h2>
+    <table border="1">
+        <tr>
+            <th>Section</th>
+            <th>Course</th>
+            <th>Exam Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Room</th>
+        </tr>
+        {% for result in search_results %}
+        <tr>
+            <form method="post" action="/">
+                {% csrf_token %}
+                <td>{{ result.section }}</td>
+                <td>{{ result.course }}</td>
+                <td>{{ result.mid_date }}</td>
+                <td>{{ result.start_time }}</td>
+                <td>{{ result.end_time }}</td>
+                <td>{{ result.room }}</td>
+                <td>
+                    <input type="hidden" name="course_to_remove" value="{{ result.course }}">
+                    <button type="submit">Remove</button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
