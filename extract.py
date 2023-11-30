@@ -8,7 +8,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "exam.settings")
 django.setup()
 
 from exam_schedule.models import ExamSchedule
-pdf_path = r'H:\Uni work\Assignment\exam routine\exam\Mid Schedule Fall 2023.pdf'
+pdf_path = r'H:\Uni work\Assignment\exam routine\exam\Final Schedule Fall 2023.pdf'
 
 all_extracted_data = []  # To store data from all pages
 
@@ -44,10 +44,11 @@ for data in all_extracted_data:
         'sl': data['SL.'].strip(),        # Use lowercase field names
         'course': data['Course'].strip(),
         'section': data['Section'].strip(),
-        'mid_date': datetime.datetime.strptime(data['Mid Date'], '%d-%b-%y').date(),
+        'mid_date': datetime.datetime.strptime(data['Final Date'], '%d-%b-%y').date(),
         'start_time': datetime.datetime.strptime(data['Start Time'], '%I:%M %p').time(),
         'end_time': datetime.datetime.strptime(data['End Time'], '%I:%M %p').time(),
-        'room': data['Room.'].strip()
+        'room': data['Room.'].strip(),
+        'mode': data['Mode'].strip(),
     }
 
     exam_schedule = ExamSchedule(**data_dict)

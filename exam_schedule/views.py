@@ -31,6 +31,7 @@ def home(request):
                         'start_time': exam_schedule.start_time.strftime('%I:%M %p'),
                         'end_time': exam_schedule.end_time.strftime('%I:%M %p'),
                         'room': exam_schedule.room,
+                        'mode': exam_schedule.mode,
                     })
                     request.session['search_results'] = search_results
                 else:
