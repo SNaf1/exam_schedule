@@ -10,23 +10,25 @@ django.setup()
 from exam_schedule.models import ExamSchedule
 pdf_path = r'H:\Uni work\Assignment\exam routine\exam\Final Schedule Fall 2023.pdf'
 
-all_extracted_data = []  # To store data from all pages
+# To store data from all pages
+all_extracted_data = []  
 
 with pdfplumber.open(pdf_path) as pdf:
     for page in pdf.pages:
         tables = page.extract_tables()
 
         for table in tables:
-            header = table[0]  # Assuming the first row contains column headers
-            data = table[1:]   # Remaining rows contain the data
+            header = table[0] 
+            data = table[1:]   
 
-            if not all_extracted_data:  # If it's the first page, just append all the data
+            if not all_extracted_data:  
                 for row in data:
                     if len(row) == len(header):
                         data_dict = {header[i]: row[i] for i in range(len(header))}
                         all_extracted_data.append(data_dict)
             else:
-                data = data[1:]  # Skip the header row on subsequent pages
+                # Skipping the header row on subsequent pages
+                data = data[1:]  
                 for row in data:
                     if len(row) == len(header):
                         data_dict = {header[i]: row[i] for i in range(len(header))}
@@ -34,14 +36,9 @@ with pdfplumber.open(pdf_path) as pdf:
 
 
 
-# Now you have a list of dictionaries containing the extracted data from all pages
-# You can process and populate your Django database with this combined data
-# for data in all_extracted_data:
-#     print(data)  # This will print each row as a dictionary
-
 for data in all_extracted_data:
     data_dict = {
-        'sl': data['SL.'].strip(),        # Use lowercase field names
+        'sl': data['SL.'].strip(),
         'course': data['Course'].strip(),
         'section': data['Section'].strip(),
         'mid_date': datetime.datetime.strptime(data['Final Date'], '%d-%b-%y').date(),
