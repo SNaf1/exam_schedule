@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Exam Schedule</title>
+    <link  rel="icon" href="{% static 'images/icon.jpg' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -199,7 +200,6 @@
             <th>Start Time</th>
             <th>End Time</th>
             <th>Room</th>
-            <th>Mode</th>
         </tr>
         {% for result in search_results %}
         <tr>
@@ -211,7 +211,6 @@
                 <td>{{ result.start_time }}</td>
                 <td>{{ result.end_time }}</td>
                 <td>{{ result.room }}</td>
-                <td>{{ result.mode }}</td>
                 <td>
                     <input type="hidden" name="course_to_remove" value="{{ result.course }}">
                     <button type="submit">Remove</button>

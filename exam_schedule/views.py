@@ -36,7 +36,6 @@ def home(request):
                         'start_time': exam_schedule.start_time.strftime('%I:%M %p'),
                         'end_time': exam_schedule.end_time.strftime('%I:%M %p'),
                         'room': exam_schedule.room,
-                        'mode': exam_schedule.mode,
                     })
                     request.session['search_results'] = search_results
                 else:
@@ -67,9 +66,8 @@ def download_timetable(request):
         start_time = request.POST.getlist('start_time')
         end_time = request.POST.getlist('end_time')
         room = request.POST.getlist('room')
-        mode = request.POST.getlist('mode')
 
-        search_results = zip(sections, courses, mid_date, start_time, end_time, room, mode)
+        search_results = zip(sections, courses, mid_date, start_time, end_time, room)
 
         html_content = render_to_string('download_timetable.html', {'search_results': search_results})
 

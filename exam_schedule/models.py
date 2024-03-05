@@ -8,4 +8,4 @@ class ExamSchedule(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     room = models.CharField(max_length=10)
-    mode = models.CharField(max_length=50, null=True)
+    # mode = models.CharField(max_length=50, null=True)
